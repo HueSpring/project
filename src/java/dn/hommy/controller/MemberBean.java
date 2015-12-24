@@ -1,13 +1,12 @@
-
-
 package dn.hommy.controller;
 
+import dn.hommy.dao.MemberDao;
 import dn.hommy.entity.Member;
 import dn.hommy.entity.SavePost;
+import java.sql.SQLException;
 import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-
 
 @ManagedBean
 @SessionScoped
@@ -16,19 +15,34 @@ public class MemberBean {
     private Member member = new Member();
     private SavePost savePost = new SavePost();
     private String message;
-    
+
     public MemberBean() {
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    /*-----------------------------------------------------------------*/
 
+    //find Member by usename
+    public Member getMemberByUsername(String username) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        MemberDao dao = new MemberDao();
+        return dao.findMemberByUsernameDao(username);
+    }
+
+    //check username
+    public boolean checkUsername(String username) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        Member item = getMemberByUsername(username);
+        if (item.getUsername() != null) {
+            return true;
+        }
+        return false;
+    }
+
+    //create new member
+    public void createNewMember() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        if (checkUsername(member.getUsername())) {
+            MemberDao dao = new MemberDao();
+            
+        }
+    }
+
+    /*-----------------------------------------------------------------*/
     public Member getMember() {
         return member;
     }
@@ -156,5 +170,5 @@ public class MemberBean {
     public void setTime_save(Date time_save) {
         savePost.setTime_save(time_save);
     }
-    
+
 }

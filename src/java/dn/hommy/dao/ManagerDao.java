@@ -32,7 +32,7 @@ public class ManagerDao {
     //create new manager short
     public boolean createNewManagerShortDao(String username, String password, Date time_create_acc) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         try (Connection conn = ConnectionFactory.getConnection()) {
-            String sql = "INSERT INTO manager (username, password, time_create_acc) " + "VALUES ('" + username + "','" + password + "','" + time_create_acc + "')";
+            String sql = "INSERT INTO manager (username, password, time_create_acc) " + "VALUES ('" + username + "','" + password + "','" + toStringDateTime(time_create_acc) + "')";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 return ps.executeUpdate() > 0;
             }
@@ -42,7 +42,7 @@ public class ManagerDao {
     //creat new roles
     public boolean createNewRolesDao(String manager_username, String role, String type_topic, Date time_create_mission) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
         try (Connection conn = ConnectionFactory.getConnection()) {
-            String sql = "INSERT INTO roles (manager_username, role, type_topic, time_create_acc, time_create_mission) "
+            String sql = "INSERT INTO roles (manager_username, role, type_topic, time_create_mission) "
                     + "VALUES ('" + manager_username + "','" + role + "','" + type_topic + "','" + toStringDateTime(time_create_mission) + "')";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 return ps.executeUpdate() > 0;
@@ -54,7 +54,7 @@ public class ManagerDao {
     public boolean updateRolesDao(String manager_username, String role, String type_topic, Date time_create_mission) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
         try (Connection conn = ConnectionFactory.getConnection()) {
             String sql = "UPDATE roles SET role = '" + role + "', type_topic = '" + type_topic 
-                    + "', time_create_mission = '" + time_create_mission + "' WHERE manager_username = '" + manager_username + "'";
+                    + "', time_create_mission = '" + toStringDateTime(time_create_mission) + "' WHERE manager_username = '" + manager_username + "'";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 return ps.executeUpdate() > 0;
             }
@@ -78,7 +78,7 @@ public class ManagerDao {
     public boolean updateMissionForModDao(String username, String type_topic, Date time_create_mission) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         try (Connection conn = ConnectionFactory.getConnection()) {
             String sql = "UPDATE roles SET type_topic = '" + type_topic
-                    + "', time_create_mission = '" + time_create_mission
+                    + "', time_create_mission = '" + toStringDateTime(time_create_mission)
                     + "' WHERE username = '" + username + "'";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 return ps.executeUpdate() > 0;
